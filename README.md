@@ -3,9 +3,9 @@ Pretty S3 index.html
 
 Author
 -------
-Artem Nagornyi
-Nolan Lawson
-Francesco Pasqualini
+- Artem Nagornyi
+- Nolan Lawson
+- Francesco Pasqualini
 
 License
 --------
