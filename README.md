@@ -1,11 +1,9 @@
-Pretty S3 index.html
-====================
+S3 Bucket Browser that doesn't suck
+====================================
 
 Author
 -------
-- Artem Nagornyi
-- Nolan Lawson
-- Francesco Pasqualini
+Artem Nagornyi
 
 License
 --------
@@ -13,11 +11,10 @@ GPL v3
 
 Summary
 ---------
-A Bootstrap-y, pretty index.html designed to be placed at the root of a public Amazon S3 bucket, which
-you just want to use for displaying a list of files.
+This S3 browser displays the list of files and virtual folders in your S3 bucket.
 
-This code is based on the original implementation by Nolan Lawson (https://github.com/nolanlawson/pretty-s3-index-html) with my own fixes and enhancements.
+This code is based on the original implementation by Nolan Lawson (https://github.com/nolanlawson/pretty-s3-index-html) with my own multiple fixes and enhancements. Also I completely redesigned the implementation of virtual folders.
 
 Usage
 -------
-Just place the index.html file in the root of your bucket.
+Just place the index.html file in the root of your bucket and give it all the necessary permissions.
