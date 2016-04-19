@@ -11,22 +11,22 @@ GPL alive by issuing this with the same license!
 -->
 
 <!--
-  Amazon S3 Bucket listing.
+Amazon S3 Bucket listing.
 
-  Copyright (C) 2008 Francesco Pasqualini
+Copyright (C) 2008 Francesco Pasqualini
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU General Public License as published by
-      the Free Software Foundation, either version 3 of the License, or
-      (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-      You should have received a copy of the GNU General Public License
-      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 	<title>Bucket loading...</title>
@@ -35,11 +35,11 @@ GPL alive by issuing this with the same license!
 		.hide-while-loading {
 			display: none;
 		}
-
+		
 		.i-expand-collapse {
 			opacity: 0.3;
 		}
-
+		
 		.i-file-or-folder {
 			margin-right: 4px;
 		}
@@ -77,8 +77,18 @@ GPL alive by issuing this with the same license!
 			<td>-</td>
 			<td>-</td>
 			{{else if isImg}}
-			<td><i class="glyphicon glyphicon-file i-file-or-folder" style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
-				<a href="{{url}}" style="color:red;font-size:75%;">{{simpleFilename}}</a></td>
+			<td><i class="glyphicon glyphicon-picture i-file-or-folder" style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
+				<a href="{{url}}" style="color:red;">{{simpleFilename}}</a></td>
+			<td>{{friendlyLastModified}}</td>
+			<td>{{friendlySizeName}}</td>
+			{{else if isVid}}
+			<td><i class="glyphicon glyphicon-film i-file-or-folder" style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
+				<a href="{{url}}" style="color:green;">{{simpleFilename}}</a></td>
+			<td>{{friendlyLastModified}}</td>
+			<td>{{friendlySizeName}}</td>
+			{{else if isSnd}}
+			<td><i class="glyphicon glyphicon-music i-file-or-folder" style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
+				<a href="{{url}}" style="color:green;">{{simpleFilename}}</a></td>
 			<td>{{friendlyLastModified}}</td>
 			<td>{{friendlySizeName}}</td>
 			{{else}}
@@ -94,7 +104,9 @@ GPL alive by issuing this with the same license!
 		(function($) {
 			"use strict";
 			var FOLDER_PATTERN = new RegExp('^[^\.]+$');
-			var IMG_PATTERN = new RegExp('^.*\.png|jpg|gif|bmp|ico$');
+			var IMG_PATTERN = new RegExp('^.*\.png|jpg|gif|bmp|ico|tiff|tff|webp|svg$');
+			var VID_PATTERN = new RegExp('^.*\.avi|mpeg4|mp4|mkv|mov|wmv|vob|mpg|3gp|flv|mp2|ogv|webm|m4v|yuv|qt|3g2|f4v$');
+			var SND_PATTERN = new RegExp('^.*\.mp3|3gp|amr|aac|flac|m4a|ogg|oga|wav|wma|tta|vox|mpc|gsm|awb|ape|opus$');
 			var TYPE_PATTERN = new RegExp('\\.([^\\.\\s]{1,10})$');
 			var KB = 1024;
 			var MB = 1000000;
@@ -108,11 +120,14 @@ GPL alive by issuing this with the same license!
 			function toFriendlySizeName(size) {
 				if (size === 0) {
 					return '';
-				} else if (size < KB) {
+				}
+				else if (size < KB) {
 					return size + ' B';
-				} else if (size < MB) {
+				}
+				else if (size < MB) {
 					return (size / KB).toFixed(0) + ' KB';
-				} else if (size < GB) {
+				}
+				else if (size < GB) {
 					return (size / MB).toFixed(2) + ' MB';
 				}
 				return (size / GB).toFixed(2) + ' GB';
@@ -147,6 +162,8 @@ GPL alive by issuing this with the same license!
 				// init logic
 				self.filename = self.key;
 				self.isImg = IMG_PATTERN.test(self.filename);
+				self.isVid = VID_PATTERN.test(self.filename);
+				self.isSnd = SND_PATTERN.test(self.filename);
 				self.url = bucketUrl + '/' + self.key;
 				self.levels = self.filename.split('/');
 				self.numLevels = self.levels.length;
@@ -200,7 +217,7 @@ GPL alive by issuing this with the same license!
 							$element.find('Size').text(),
 							$element.find('Key').text()
 						);
-						if (file.simpleFilename.indexOf('index.html') == -1) {
+						if (!((file.simpleFilename.indexOf('index.html') > -1) && (myStringArray.length == 1))) {
 							filesOrFolders.push(file);
 						}
 					}
