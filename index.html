@@ -217,7 +217,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 							$element.find('Size').text(),
 							$element.find('Key').text()
 						);
-						if (!((file.simpleFilename.indexOf('index.html') > -1) && (myStringArray.length == 1))) {
+						if (!(((file.simpleFilename.indexOf('index.html') > -1) || (file.simpleFilename.indexOf('favicon.ico') > -1)) && (myStringArray.length == 1))) {
 							filesOrFolders.push(file);
 						}
 					}
